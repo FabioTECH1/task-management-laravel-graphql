@@ -1,0 +1,56 @@
+type Query{
+    getTask(id:ID @eq): Task @find 
+    getTasks: [Task!]! @all
+    myTasks: User! @guard @auth
+  }
+
+type Mutation{
+  login(email: String!, password: String!): AuthPayload! 
+
+  createTask(id:ID, 
+    title: String!, 
+    description: String!, 
+    due_date: String!, 
+    status: String,
+    user_id: ID
+      ): Task! @create
+
+  updateTask(id:ID!, 
+    title: String, 
+    description: String, 
+    due_date: String, 
+    status: String
+      ): Task! @update
+
+  deleteTask(id:ID! @eq
+    ): Task @delete
+
+  logout: Boolean @guard
+
+  registerUser(
+    name: String!, 
+    email: String! @rules(apply:["email","unique:users"]), 
+    password: String! @rules(apply:["min:8"])
+      ): User! @create
+  }
+
+type AuthPayload {
+  token: String
+}
+
+type User{
+    id:ID
+    name:String
+    email:String
+    password:String
+    tasks: [Task]! @hasMany
+  }
+
+type Task{
+  id:ID
+  title:String
+  description: String
+  due_date: String
+  status: String
+  user: User! @belongsTo 
+}
