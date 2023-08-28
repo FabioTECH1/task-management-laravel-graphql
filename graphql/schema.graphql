@@ -35,6 +35,8 @@ type Mutation{
   }
 
 type AuthPayload {
+  user_id: String
+  name: String
   token: String
 }
 

@@ -21,6 +21,10 @@ final class Login
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-        return ['token' => $user->createToken('my-token')->plainTextToken];
+        return [
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'token' => $user->createToken('my-token')->plainTextToken,
+        ];
     }
 }
